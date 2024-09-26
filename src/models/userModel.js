@@ -1,7 +1,7 @@
 const { default: mongoose, isValidObjectId, Schema } = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String },
   giveName: {
     type: String,
   },

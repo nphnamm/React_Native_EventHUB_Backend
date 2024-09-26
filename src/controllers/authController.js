@@ -1,6 +1,5 @@
 const UserModel = require("../models/userModel");
-
-const bcrypt = require("bcrypt");
+const bcryp = require("bcrypt");
 const asyncHandle = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -19,7 +18,7 @@ const getJsonWebToken = async (email, id) => {
     email,
     id,
   };
-  const token = jwt.sign(payload, process.env.SECRET_KEY, {
+  const token = jwt.sign(payload, "dfbkjgflseiia3948943954wfsdchsgfuw#%#%", {
     expiresIn: "7d",
   });
   return token;
@@ -32,25 +31,27 @@ const handleSendMail = async (val) => {
   }
 };
 const register = asyncHandle(async (req, res) => {
-  const { fullname, email, password } = req.body;
+  const { username, email, password } = req.body;
+  console.log("data", username, email, password, process.env.SECRET_KEY);
   const existingUser = await UserModel.findOne({ email });
 
   if (existingUser) {
     res.status(400);
     throw new Error("User has already exist!!!");
   }
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  const newuser = new UserModel({
+
+  const salt = await bcryp.genSalt(10);
+  const hashedPassword = await bcryp.hash(password, salt);
+  const newUser = new UserModel({
     email,
-    fullname: fullname ?? "",
+    name: username ?? "",
     password: hashedPassword,
   });
-  await newuser.save();
+  await newUser.save();
   res.status(200).json({
     message: "Register new user successfully",
     data: {
-      email: newuser.email,
+      email: newUser.email,
       id: newUser._id,
       accesstoken: await getJsonWebToken(email, newUser.id),
     },
