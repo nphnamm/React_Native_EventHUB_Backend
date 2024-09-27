@@ -18,7 +18,7 @@ const getJsonWebToken = async (email, id) => {
     email,
     id,
   };
-  const token = jwt.sign(payload, "dfbkjgflseiia3948943954wfsdchsgfuw#%#%", {
+  const token = jwt.sign(payload, process.env.SECRET_KEY, {
     expiresIn: "7d",
   });
   return token;
