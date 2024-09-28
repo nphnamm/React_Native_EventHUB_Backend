@@ -64,7 +64,7 @@ const login = asyncHandle(async (req, res) => {
     res.status(403);
     throw new Error("User not found!!!");
   }
-  const isMatchPassword = await bcrypt.compare(password, existingUser.password);
+  const isMatchPassword = await bcryp.compare(password, existingUser.password);
   if (!isMatchPassword) {
     res.status(401);
     throw new Error("Email or Password is not correct");
